@@ -1,0 +1,14 @@
+[package]
+name = "generar_c"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+clap = { version = "4.3.3", features = ["derive"] }
+dotenv = "0.15.0"
+lazy_static = "1.4.0"
+serde_json = "1.0.96"
+terminal-menu = "2.0.5"
+time = { version = "0.3.22", features = ["macros", "local-offset", "formatting"] }
