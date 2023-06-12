@@ -4,8 +4,13 @@ use std::{
 };
 
 use clap::Parser;
+use env::{CLAVE, EJECUTABLE, RUTA, SERVIDOR, USUARIO};
 use terminal_menu::{button, label, menu, mut_menu, run};
 use time::Duration;
+
+use crate::env::HOTELES;
+
+mod env;
 
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
@@ -19,24 +24,9 @@ struct Cli {
 }
 
 fn generar_c(bbdd: &str, unidad: &str, fecha: &str) -> Output {
-    dotenv::dotenv().ok();
-    let servidor = std::env::var("SERVIDOR").expect("No se encuentra la variable SERVIDOR");
-    let usuario = std::env::var("USUARIO").expect("No se encuentra la variable USUARIO");
-    let clave = std::env::var("CLAVE").expect("No se encuentra la variable CLAVE");
-    let ruta = std::env::var("RUTA").expect("No se encuentra la variable RUTA");
-    let ejecutable = std::env::var("EJECUTABLE").expect("No se encuentra la variable EJECUTABLE");
-    let args = vec![
-        servidor.as_str(),
-        bbdd,
-        usuario.as_str(),
-        clave.as_str(),
-        ruta.as_str(),
-        unidad,
-        fecha,
-        fecha,
-    ];
+    let args = vec![SERVIDOR, bbdd, USUARIO, CLAVE, RUTA, unidad, fecha, fecha];
     Command::new("Winsolution.ContaPS.exe")
-        .current_dir(ejecutable.as_str())
+        .current_dir(EJECUTABLE)
         .args(args)
         .output()
         .expect("failed to execute process")
@@ -52,15 +42,9 @@ fn generar_fecha_anterior() -> Result<String, time::error::Error> {
 }
 
 fn main() -> Result<(), time::error::Error> {
-    dotenv::dotenv().ok();
     let cli = Cli::parse();
-    for (key, value) in std::env::vars() {
-        println!("{}: {}", key, value);
-    }
-    let hoteles = std::fs::read_to_string("hoteles.json").expect("Fallo al leer hoteles.json");
-
     let hoteles: HashMap<String, String> =
-        serde_json::from_str(&hoteles).expect("Fallo al serializar HOTELES");
+        serde_json::from_str(HOTELES).expect("Fallo al serializar HOTELES");
     println!("{hoteles:?}");
     let fecha = match cli.fecha {
         Some(date) => date,
