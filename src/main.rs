@@ -15,6 +15,7 @@ mod menu;
 
 fn make_c(bbdd: &str, unidad: &str, fecha: &str) -> Output {
     let args = vec![SERVIDOR, bbdd, USUARIO, CLAVE, RUTA, unidad, fecha, fecha];
+    println!("{}", EJECUTABLE);
     Command::new("Winsolution.ContaPS.exe")
         .current_dir(EJECUTABLE)
         .args(args)

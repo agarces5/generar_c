@@ -5,8 +5,14 @@ use time::Duration;
 
 use crate::menu::main_menu;
 
-#[derive(Parser)]
-#[command(author, version, about, long_about = None)]
+/// Genera el archivo C de los hoteles directamente a la carpeta de "hoteles"
+#[derive(Parser, Debug)]
+#[command(name = "Generador archivo C")]
+#[command(author = "Antonio Garcés")]
+#[command(
+    help_template = "{about-section} \n {usage-heading} {usage} \n {all-args} {tab} \n\n Autor: {author-with-newline}"
+)]
+#[command(about, long_about)]
 pub struct Cli {
     /// Unidad hotelera
     unidad: Option<String>,
